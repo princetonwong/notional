@@ -288,6 +288,23 @@ class PagesEndpoint(Endpoint):
 
         return page.refresh(**data)
 
+    def clone(self, page):
+        """Create a deep copy of the given page."""
+
+        log.info("Cloning page :: %s", page.id)
+
+        new_page = self.create(parent=page.parent, properties=page.properties)
+
+        if page.cover is not None:
+            self.update(page, cover=page)
+
+        if page.icon is not None:
+            self.update(page, icon=page)
+
+        # TODO deep clone children
+
+        return new_page
+
 
 class SearchEndpoint(Endpoint):
     """Notional interface to the API 'search' endpoint."""

@@ -93,6 +93,15 @@ class PageEndpointTests(EndpointTest, unittest.TestCase):
         diff = datetime.now(timezone.utc) - new_page.created_time
         self.assertLessEqual(diff.total_seconds(), 60)
 
+    def test_ClonePage(self):
+        """Comfirm deep copy of pages."""
+
+        page = self.create_temp_page(title="test_ClonePage")
+        copy = self.notion.pages.clone(page)
+        self.cleanup_pages.append(copy)
+
+        self.assertEqual(page.parent, copy.parent)
+
     def test_PageParent(self):
         """Verify page parent references."""
 
